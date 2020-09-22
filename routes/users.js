@@ -12,6 +12,7 @@ router.get("/", (req, res) => {
     res.render("template", {
       locals: {
         title: "Login Page",
+        is_logged_in: req.session.is_logged_in
       },
       partials: {
         partial: "partial-user-login",
@@ -23,6 +24,7 @@ router.get("/", (req, res) => {
     res.render("template", {
       locals: {
         title: "Sign Up Page",
+        is_logged_in: req.session.is_logged_in
       },
       partials: {
         partial: "partial-signup",
@@ -32,7 +34,7 @@ router.get("/", (req, res) => {
 
 router.get("/logout", (req, res) => {
     req.session.destroy();
-    res.redirect("/");
+    res.redirect("/users/login");
 })
 
 
@@ -59,6 +61,7 @@ router.post("/signup", (req, res) => {
   
   router.post("/login", (req, res) => {
     const { email, password } = req.body;
+    console.log("req body: ", req.body)
     const userInstance = new UsersModel(null, null, null, email, password);
     userInstance.login().then(response => {
         req.session.is_logged_in = response.isValid;
@@ -67,13 +70,13 @@ router.post("/signup", (req, res) => {
             req.session.first_name = first_name;
             req.session.last_name = last_name;
             req.session.user_id = user_id;
-            res.redirect("/")
+            res.redirect("/users/tasks")
         } else {
             res.sendStatus(401);
         }
-    })
+    });
    
-})
+});
 
 
 

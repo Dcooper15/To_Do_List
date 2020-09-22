@@ -41,7 +41,11 @@ server.listen(port, hostname, () => {
     console.log(`Server Running at http://${hostname}:${port}`)
 });
 
+
+const tasksController = require("./routes/tasks");
 const indexController = require("./routes/indexRoute");
 const usersController = require("./routes/users");
+
+app.use("/users/tasks", tasksController);
 app.use("/users", usersController);
 app.use("/", indexController);

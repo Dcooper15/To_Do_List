@@ -33,8 +33,9 @@ class UsersModel {
     //Instance Method. Not passing arguments
     async login() {
         try {
-            const response = await db.one(`SELECT id, first_name, last_name, email, password FROM users WHERE email = $1;` [this.email]);
+            const response = await db.one(`SELECT id, first_name, last_name, email, password FROM users WHERE email = $1;`, [this.email]);
             const isValid = await this.checkPassword(response.password);
+            console.log(response);
             if (!!isValid) {
                 // (!!IsValid) = if (isValid === absolutely, completely, 100% TRUE)
                 const { first_name, last_name, id } = response;
